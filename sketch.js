@@ -15,7 +15,7 @@ var score = 0;
 var gameOverImg, restartImg;
 
 function preload() {
-    sonic_running = loadAnimation("0000.png", "0001.png", "0002.png", "0003.png", "0004.png", "0005.png", "0006.png", "0007.png", "0008.png", "0009.png", "0010.png", "0011.png", "0012.png", "0013.png", "0014.png", "0015.png");
+    sonic_running = loadAnimation("sonic1.png", "sonic2.png", "sonic3.png", "sonic4.png", "sonic5.png", "sonic6.png");
 
     groundImage = loadImage("sonicground1.png");
 
