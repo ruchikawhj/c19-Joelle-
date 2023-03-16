@@ -161,10 +161,10 @@ function spawnRings() {
         rings.addAnimation("rings", ringsImg);
         rings.scale = 0.7;
         rings.velocityX = -(6);
-        rings.debug = true;
+        //rings.debug = true;
         rings.y = Math.round(random(height / 2 + 100, 3 * height / 4))
 
-      //  rings.scale = 0.2;
+        rings.scale = 0.2;
         rings.lifetime = 300;
 
         ringsGroup.add(rings);
