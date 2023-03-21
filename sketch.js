@@ -14,6 +14,8 @@ var rings, ringsGroup, ringsImg;
 var score = 0;
 var gameOverImg, restartImg;
 
+var jumpSound,bgSound,checkPointSound,dieSound,ringCollectSound;
+
 function preload() {
     sonic_running = loadAnimation("sonic1.png", "sonic2.png", "sonic3.png", "sonic4.png", "sonic5.png", "sonic6.png");
 
@@ -27,8 +29,14 @@ function preload() {
 
     ringsImg = loadAnimation("ring1.png", "ring2.png");
 
-    restartImg = loadImage("restart.png")
-    gameOverImg = loadImage("gameOver.png")
+    restartImg = loadImage("restart.png");
+    gameOverImg = loadImage("gameOver.png");
+
+    jumpSound=loadSound("jump.wav");
+    dieSound=loadSound("die.mp3");
+    checkPointSound=loadSound("checkPoint.mp3");
+    bgSound=loadSound("bk.mp3");
+    ringCollectSound=loadSound("candy.wav");
 
 }
 
@@ -62,6 +70,8 @@ function setup() {
     gameOver.visible = false;
     restart.visible = false;
 
+    
+
     motoBugGroup = new Group();
     ringsGroup = new Group();
 
@@ -72,6 +82,10 @@ function draw() {
     background(180);
 
     if (gameState === PLAY) {
+        if(bgSound.isPlaying()===false){
+            bgSound.play();
+            bgSound.setVolume(0.2);
+        }
         sonic.changeAnimation("running");
         gameOver.visible = false;
         restart.visible = false;
@@ -83,17 +97,27 @@ function draw() {
 
         if (keyDown("space") && sonic.y > height / 2) {
             sonic.velocityY = -10;
+            jumpSound.play();
         }
         sonic.velocityY += 0.8;
 
         if (motoBugGroup.isTouching(sonic)) {
-            gameState = END;
+            gameState = END;     
+            bgSound.stop();       
+            dieSound.play();
+
+        }
+
+        if(score>0 && score%100===0){
+            checkPointSound.play();
         }
 
         for (var i = 0; i < ringsGroup.length; i++) {
             if (ringsGroup.get(i).isTouching(sonic)) {
                 score += 10;
                 ringsGroup.get(i).destroy();
+                
+                ringCollectSound.play();
             }
         }
         spawnRings();
@@ -161,7 +185,7 @@ function spawnRings() {
         rings.addAnimation("rings", ringsImg);
         rings.scale = 0.7;
         rings.velocityX = -(6);
-        //rings.debug = true;
+      //  rings.debug = true;
         rings.y = Math.round(random(height / 2 + 100, 3 * height / 4))
 
         rings.scale = 0.2;
